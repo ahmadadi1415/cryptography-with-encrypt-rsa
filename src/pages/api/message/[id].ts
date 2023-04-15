@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const { privateKey } = JSON.parse(process.env.PRIVATE_KEY as string)
 
-        console.log(privateKey)
+        // console.log(privateKey)
 
         try {
 
@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 privateKey: privateKey
             })
 
-            console.log(realMessage)
+            // console.log(realMessage)
             return res.status(200).json({ realMessage })
             
         } catch (error) {

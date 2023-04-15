@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import EncryptRSA from 'encrypt-rsa'
 import axios from 'axios'
 import Link from 'next/link'
@@ -8,6 +8,7 @@ import Link from 'next/link'
 export default function Home() {
 
 	const [message, setMessage] = useState("")
+	const [submitting, setSubmitting] = useState(false)
 
 	const encryptRSA = new EncryptRSA()
 
@@ -30,19 +31,28 @@ kwIDAQAB
 				publicKey: pubKey
 			})
 
+			setSubmitting(true)
+
 			const response = await axios.post("/api/message", {
 				message: encrypted,
 			})
 
 			console.log(encrypted)
 			setMessage("")
+			alert("Encryption successful!")
+			setSubmitting(false)
 		} catch (error: any) {
 			console.log(error.message)
-
 			alert(error.message)
+			setSubmitting(false)
 		}
 
 	}
+
+	useEffect(() => {
+	  
+	}, [submitting])
+	
 
 	return (
 		<>
@@ -82,7 +92,7 @@ kwIDAQAB
 							</div>
 
 							<div className='mt-3'>
-								<button className="shadow-lg focus: bg-gray-800 hover:bg-gray-900 rounded-xl p-3 px-6" type='submit'>Encrypt!</button>
+								<button className="shadow-lg focus: bg-gray-800 hover:bg-gray-900 rounded-xl p-3 px-6" type='submit' disabled={submitting}>{(!submitting) ? "Encrypt!" : "Encrypting..."}</button>
 								<Link href={'/messages'} className='px-5'>
 									Check all the messages
 								</Link>

@@ -17,18 +17,29 @@ interface Message {
 export default function Messages({ messages }: Props) {
 
     const [rerender, setRerender] = useState(false)
+    const [submitting, setSubmitting] = useState(false)
+    const [msgIndex, setMsgIndex] = useState<number>(-1)
 
     async function decrypt(id: string) {
         const index = messages.findIndex(message => message.id === id)
+        setMsgIndex(index)
         // console.log(messages[index].realMessage)
         if (messages[index].realMessage === undefined) {
+            setSubmitting(true)
             const response = await axios.get(`/api/message/${id}`)
             messages[index].realMessage = response.data.realMessage
             // console.log("S")
+            setSubmitting(false)
         }
 
         alert(`Real message: \n${messages[index].realMessage}`)
+        setMsgIndex(-1)
     }
+
+    useEffect(() => {
+        
+    }, [submitting, msgIndex])
+    
 
     return <>
         <Head>
@@ -51,7 +62,7 @@ export default function Messages({ messages }: Props) {
                         RSA encryption is a public-key cryptosystem that is widely used for secure data transmission. It is also one of the oldest. The acronym "RSA" comes from the surnames of Ron Rivest, Adi Shamir and Leonard Adleman, who publicly described the algorithm in 1977. RSA encryption works by using a pair of keys, a public key and a private key. The public key can be shared with anyone, while the private key must be kept secret. To encrypt a message, the sender uses the recipient's public key. To decrypt the message, the recipient uses their private key. RSA encryption is a very secure algorithm, and it is used in a wide variety of applications, including secure email, online banking, and digital signatures.
                     </div>
                 </div>
-                <div className="text-center py-10 px-52">
+                <div className="text-center py-10 lg:px-52 md:px-7 sm:px-5">
                     <table className="w-full border-separate border-spacing-y-2">
                         <thead className="bg-gray-800">
                             <tr className="font-semibold text-lg text-gray-100 ">
@@ -71,7 +82,14 @@ export default function Messages({ messages }: Props) {
                                             <div className="w-full overflow-y-auto font-mono overflow-scroll">{messageData.message}</div>
                                         </td>
                                         <td className="w-4/12 max-w-prose px-5 rounded-e-full py-1">
-                                            <button className="focus:bg-black  hover:bg-gray-900 bg-opacity-10 py-2 px-5 shadow-lg rounded-full text-center" type="button" onClick={async () => await decrypt(messageData.id)}>Decrypt!</button>
+                                            <button className="focus:bg-black  hover:bg-gray-900 bg-opacity-10 py-2 px-5 shadow-lg rounded-full text-center" 
+                                            type="button" 
+                                            disabled={submitting}
+                                            onClick={() => decrypt(messageData.id)}>
+                                                {(messageData.realMessage === undefined) ?
+                                                    ((submitting && msgIndex === index) ? "Decrypting..." : "Decrypt!") 
+                                                : "Show"}
+                                                </button>
                                         </td>
                                     </tr>
                                 ))
