@@ -19,15 +19,16 @@ export default function Messages({ messages }: Props) {
     const [rerender, setRerender] = useState(false)
 
     async function decrypt(id: string) {
-        const response = await axios.get(`/api/message/${id}`)
         const index = messages.findIndex(message => message.id === id)
-        messages[index].realMessage = response.data.realMessage
-        setRerender(true)
-    }
+        // console.log(messages[index].realMessage)
+        if (messages[index].realMessage === undefined) {
+            const response = await axios.get(`/api/message/${id}`)
+            messages[index].realMessage = response.data.realMessage
+            // console.log("S")
+        }
 
-    useEffect(() => {
-        setRerender(false)
-    }, [messages, rerender])
+        alert(`Real message: \n${messages[index].realMessage}`)
+    }
 
     return <>
         <Head>
@@ -60,25 +61,17 @@ export default function Messages({ messages }: Props) {
                             </tr>
                         </thead>
 
-                        <tbody className="overflow-y-auto h-32">
+                        <tbody className="overflow-y-auto">
                             {
-                                messages.map(messageData => (
-                                    
-                                    <tr className="text-gray-300 bg-black bg-opacity-20">
+                                messages.map((messageData, index) => (
+
+                                    <tr key={index} className="text-gray-300 bg-orange-950 bg-opacity-20 hover:bg-opacity-40">
                                         <td className="w-3/12 font-mono rounded-s-full">{messageData.id}</td>
                                         <td className="w-5/12 max-w-prose">
-                                            <div className="w-full p-2 overflow-y-auto font-mono">{messageData.message}</div>
+                                            <div className="w-full overflow-y-auto font-mono overflow-scroll">{messageData.message}</div>
                                         </td>
-                                        <td className="w-4/12 max-w-prose px-5 rounded-e-full">
-                                            {
-                                                (!messageData.realMessage) ? (
-                                                    <div>
-                                                        <button className="focus:bg-black  hover:bg-gray-900 bg-opacity-10 py-2 px-5 shadow-lg rounded-full text-center" type="button" onClick={async () => await decrypt(messageData.id)}>Decrypt!</button>
-                                                    </div>
-                                                ) : (
-                                                    <div className="w-full overflow-y-auto align-middle font-normal text-left py-2">{messageData.realMessage}</div>
-                                                )
-                                            }
+                                        <td className="w-4/12 max-w-prose px-5 rounded-e-full py-1">
+                                            <button className="focus:bg-black  hover:bg-gray-900 bg-opacity-10 py-2 px-5 shadow-lg rounded-full text-center" type="button" onClick={async () => await decrypt(messageData.id)}>Decrypt!</button>
                                         </td>
                                     </tr>
                                 ))
@@ -94,7 +87,7 @@ export default function Messages({ messages }: Props) {
 }
 
 export async function getServerSideProps() {
-    let messages = await prisma.message.findMany()
+    const messages = await prisma.message.findMany()
 
     return {
         props: {
