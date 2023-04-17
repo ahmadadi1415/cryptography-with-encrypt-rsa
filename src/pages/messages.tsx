@@ -37,9 +37,9 @@ export default function Messages({ messages }: Props) {
     }
 
     useEffect(() => {
-        
+
     }, [submitting, msgIndex])
-    
+
 
     return <>
         <Head>
@@ -62,13 +62,13 @@ export default function Messages({ messages }: Props) {
                         RSA encryption is a public-key cryptosystem that is widely used for secure data transmission. It is also one of the oldest. The acronym "RSA" comes from the surnames of Ron Rivest, Adi Shamir and Leonard Adleman, who publicly described the algorithm in 1977. RSA encryption works by using a pair of keys, a public key and a private key. The public key can be shared with anyone, while the private key must be kept secret. To encrypt a message, the sender uses the recipient's public key. To decrypt the message, the recipient uses their private key. RSA encryption is a very secure algorithm, and it is used in a wide variety of applications, including secure email, online banking, and digital signatures.
                     </div>
                 </div>
-                <div className="text-center py-10 lg:px-52 md:px-7 sm:px-5">
+                {/* <div className="text-center py-10 lg:px-52 md:px-7 sm:px-5">
                     <table className="w-full border-separate border-spacing-y-2">
                         <thead className="bg-gray-800">
                             <tr className="font-semibold text-lg text-gray-100 ">
-                                <td className="w-3/12 py-4 rounded-s-full shadow-xl">ID</td>
-                                <td className="w-5/12 py-4 shadow-xl">Encrypted Message</td>
-                                <td className="w-4/12 py-4 rounded-e-full shadow-xl">Real Message</td>
+                                <th className="w-3/12 py-4 rounded-s-full shadow-xl">ID</th>
+                                <th className="w-5/12 py-4 shadow-xl">Encrypted Message</th>
+                                <th scope="col" className="w-4/12 py-4 rounded-e-full shadow-xl">Real Message</th>
                             </tr>
                         </thead>
 
@@ -82,14 +82,14 @@ export default function Messages({ messages }: Props) {
                                             <div className="w-full overflow-y-auto font-mono overflow-scroll">{messageData.message}</div>
                                         </td>
                                         <td className="w-4/12 max-w-prose px-5 rounded-e-full py-1">
-                                            <button className="focus:bg-black  hover:bg-gray-900 bg-opacity-10 py-2 px-5 shadow-lg rounded-full text-center" 
-                                            type="button" 
-                                            disabled={submitting}
-                                            onClick={() => decrypt(messageData.id)}>
+                                            <button className="focus:bg-black  hover:bg-gray-900 bg-opacity-10 py-2 px-5 shadow-lg rounded-full text-center"
+                                                type="button"
+                                                disabled={submitting}
+                                                onClick={() => decrypt(messageData.id)}>
                                                 {(messageData.realMessage === undefined) ?
-                                                    ((submitting && msgIndex === index) ? "Decrypting..." : "Decrypt!") 
-                                                : "Show"}
-                                                </button>
+                                                    ((submitting && msgIndex === index) ? "Decrypting..." : "Decrypt!")
+                                                    : "Show"}
+                                            </button>
                                         </td>
                                     </tr>
                                 ))
@@ -97,6 +97,47 @@ export default function Messages({ messages }: Props) {
 
                         </tbody>
                     </table>
+                </div> */}
+                <div className="flex justify-center items-center container px-10">
+                    <div className="flex flex-col">
+                        <div className="overflow-x-auto">
+                            <div className="p-1.5 min-w-fit inline-block align-middle">
+                                <div className="overflow-hidden">
+                                    <table className="min-w-full border-separate border-spacing-y-1.5">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">ID</th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Encrypted message</th>
+                                                <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase">Real message</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="">
+                                            {
+                                                messages.map((messageData, index) => (
+
+                                                    <tr key={index} className="text-gray-300 bg-orange-950 bg-opacity-20 hover:bg-opacity-40">
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 overflow-auto rounded-s-full font-mono">{messageData.id}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 sm:max-w-prose md:max-w-xs lg:max-w-md xl:max-w-2xl rounded-none">
+                                                            <div className="w-10 sm:w-20 md:w-full overflow-y-auto font-mono overflow-scroll">{messageData.message}</div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium rounded-e-full">
+                                                            <button className="focus:bg-black hover:bg-gray-900 hover:text-white bg-opacity-10 py-2 px-5 shadow-lg rounded-full text-center w-32"
+                                                                type="button"
+                                                                disabled={submitting}
+                                                                onClick={() => decrypt(messageData.id)}>
+                                                                {(messageData.realMessage === undefined) ?
+                                                                    ((submitting && msgIndex === index) ? "Decrypting..." : "Decrypt!")
+                                                                    : "Show"}
+                                                            </button>                                                    </td>
+                                                    </tr>
+                                                ))
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>

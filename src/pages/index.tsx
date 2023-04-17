@@ -62,13 +62,12 @@ kwIDAQAB
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<script></script>
-
 			<main className="bg-gradient-to-r from-gray-800 to-orange-600 min-h-screen">
 				<div className="container ">
 					<div className="pt-20">
 						<h1 className="text-5xl text-center font-mono">RSA ENCRYPTION</h1>
 					</div>
+					
 					<div className="pt-6 mx-32">
 						<p className="text-xl text-left pt-5 font-sans">What is it?</p>
 					</div>
