@@ -57,7 +57,7 @@ export default function Messages({ messages }: Props) {
                 <div className="pt-6 mx-32">
                     <p className="text-lg text-left pt-5 font-sans text-gray-50">What is it?</p>
                 </div>
-                <div className="py-3 mx-20">
+                <div className="py-3 mx-20 mb-4">
                     <div className='text-base text-left font-sans text-gray-50'>
                         RSA encryption is a public-key cryptosystem that is widely used for secure data transmission. It is also one of the oldest. The acronym "RSA" comes from the surnames of Ron Rivest, Adi Shamir and Leonard Adleman, who publicly described the algorithm in 1977. RSA encryption works by using a pair of keys, a public key and a private key. The public key can be shared with anyone, while the private key must be kept secret. To encrypt a message, the sender uses the recipient's public key. To decrypt the message, the recipient uses their private key. RSA encryption is a very secure algorithm, and it is used in a wide variety of applications, including secure email, online banking, and digital signatures.
                     </div>
@@ -98,7 +98,7 @@ export default function Messages({ messages }: Props) {
                         </tbody>
                     </table>
                 </div> */}
-                <div className="flex justify-center items-center container px-10">
+                {/* <div className="flex justify-center items-center container px-10">
                     <div className="flex flex-col">
                         <div className="overflow-x-auto">
                             <div className="p-1.5 min-w-fit inline-block align-middle">
@@ -138,6 +138,44 @@ export default function Messages({ messages }: Props) {
                             </div>
                         </div>
                     </div>
+                </div> */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 container px-20">
+                    {
+                        messages.map((messageData, index) => (
+
+                            <div key={index} className="col-auto rounded-md bg-black bg-opacity-40 p-5 shadow-md">
+                                <div className="mb-4">
+                                    <label className="block mb-1 text-sm text-gray-900 dark:text-white font-semibold">ID</label>
+                                    <textarea id="message"
+                                        className="block p-2.5 w-full text-sm rounded-lg border-none bg-white bg-opacity-10 text-gray-100 font-mono"
+                                        value={messageData.id}
+                                        readOnly
+                                        rows={1}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block mb-4 text-xs text-gray-900 dark:text-white font-semibold">ENCRYPTED MESSAGE</label>
+                                    <textarea id="message"
+                                        className="block p-2.5 w-full text-sm rounded-lg border-none bg-white bg-opacity-10 text-gray-100 font-mono"
+                                        value={messageData.message}
+                                        readOnly
+                                        rows={6}
+                                    />
+                                </div>
+                                <div className="mt-4 text-right">
+                                    <button className=" hover:bg-gray-900 hover:text-white bg-white bg-opacity-10 py-2 px-5 shadow-lg rounded-full text-center w-32"
+                                        type="button"
+                                        disabled={submitting}
+                                        onClick={() => decrypt(messageData.id)}>
+                                        {(messageData.realMessage === undefined) ?
+                                            ((submitting && msgIndex === index) ? "Decrypting..." : "Decrypt!")
+                                            : "Show"}
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    }
+
                 </div>
             </div>
         </main>
