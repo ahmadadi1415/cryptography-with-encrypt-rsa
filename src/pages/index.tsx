@@ -65,7 +65,8 @@ kwIDAQAB
 			<main className="bg-gradient-to-r from-gray-800 to-orange-600 min-h-screen">
 				<div className="container ">
 					<div className="pt-20">
-						<h1 className="text-5xl text-center font-mono">RSA ENCRYPTION</h1>
+						<h1 className="text-5xl text-center">ENCRYPT MESSAGE WITH RSA ENCRYPTION</h1>
+						<h5 className='text-center mx-3'>Created by <b>Ahmad Adi Prasetyo</b></h5>
 					</div>
 					
 					<div className="pt-6 mx-32">
